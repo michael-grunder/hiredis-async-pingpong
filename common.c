@@ -144,8 +144,25 @@ void subscribeCb(redisAsyncContext *c, void *r, void *privdata) {
     freePublishMessage(msg);
 }
 
+void printUsage(const char *program) {
+    fprintf(stderr, "Usage: %s [options]\n", program);
+    fprintf(stderr, "Options:\n");
+    fprintf(stderr, "  --host <hostname>       Set the Redis server hostname (default: localhost)\n");
+    fprintf(stderr, "  --port <port>           Set the Redis server port (default: 6380, or 16380 if --tls is specified)\n");
+    fprintf(stderr, "  --tls                   Enable TLS connection\n");
+    fprintf(stderr, "  --nonblock              Use non-blocking mode\n");
+    fprintf(stderr, "  --client <a|b>          Set the client to either 'a' or 'b', determining pub/sub channels\n");
+    fprintf(stderr, "  --message-len <length>  Set the length of the message to be published (max: 10MB)\n");
+    fprintf(stderr, "\n");
+
+    exit(0);
+}
+
 options parseOptions(int argc, char **argv) {
     options opts = {0};
+    const char *program;
+
+    program = argv[0];
 
     argc--; argv++;
 
@@ -177,6 +194,8 @@ options parseOptions(int argc, char **argv) {
             if (opts.message_len > 1024 * 1024 * 10) {
                 panicAbort("Message length %llu too large\n", opts.message_len);
             }
+        } else if (!strcasecmp(*argv, "--help")) {
+            printUsage(program);
         } else {
             fprintf(stderr, "Warning: Unknown option: %s\n", *argv);
         }
