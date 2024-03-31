@@ -4,7 +4,8 @@ RUN apt-get -y update && apt-get -y install \
     build-essential \
     git libssl-dev \
     redis-server \
-    libevent-dev
+    libevent-dev \
+    neovim
 
 FROM build0 as build1
 

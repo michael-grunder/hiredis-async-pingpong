@@ -153,6 +153,7 @@ void printUsage(const char *program) {
     fprintf(stderr, "  --nonblock              Use non-blocking mode\n");
     fprintf(stderr, "  --client <a|b>          Set the client to either 'a' or 'b', determining pub/sub channels\n");
     fprintf(stderr, "  --message-len <length>  Set the length of the message to be published (max: 10MB)\n");
+    fprintf(stderr, "  -h, --help              Print this message.");
     fprintf(stderr, "\n");
 
     exit(0);
@@ -194,7 +195,7 @@ options parseOptions(int argc, char **argv) {
             if (opts.message_len > 1024 * 1024 * 10) {
                 panicAbort("Message length %llu too large\n", opts.message_len);
             }
-        } else if (!strcasecmp(*argv, "--help")) {
+        } else if (!strcasecmp(*argv, "--help") || !strcasecmp(*argv, "-h")) {
             printUsage(program);
         } else {
             fprintf(stderr, "Warning: Unknown option: %s\n", *argv);
